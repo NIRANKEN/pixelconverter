@@ -52,6 +52,7 @@ public class App {
     }
 
     private static void exec() {
+        System.out.println("画素値(0~255)を入力してください: ");
         try (Scanner scan = new Scanner(System.in)) {
             Integer value = Integer.valueOf(scan.nextLine());
             if (value < 0 || 255 < value) {

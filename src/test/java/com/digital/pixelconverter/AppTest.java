@@ -26,9 +26,6 @@ public class AppTest {
         System.setOut(standardOut);
     }
 
-    /**
-     * Rigorous Test :-)
-     */
     @ParameterizedTest
     @ValueSource(ints = { 0, 1, 50 })
     public void testExecStdinMode(int value) {
@@ -37,7 +34,8 @@ public class AppTest {
         ByteArrayInputStream bais = new ByteArrayInputStream(userInput.getBytes());
         System.setIn(bais);
         App.main(new String[] {});
-        assertEquals("ポスタリゼーションによる画素値の変換結果: 0", outputStreamCaptor.toString().trim());
+        assertEquals("画素値(0~255)を入力してください: " + System.lineSeparator() + "ポスタリゼーションによる画素値の変換結果: 0",
+                outputStreamCaptor.toString().trim());
     }
 
     @Test
