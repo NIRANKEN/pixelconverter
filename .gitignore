@@ -1,2 +1,2 @@
-./target
-./src/test/resources/result.csv
+/target
+/src/test/resources/result.csv
