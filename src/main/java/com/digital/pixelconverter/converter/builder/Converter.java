@@ -5,11 +5,14 @@ import java.util.Map;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class Converter {
 
   /**
-   * @param inputValues ... N×Nで配置された画素値のMap(0~255)
-   * @return 変換したあとのN×Nで配置された画素値のMap(0~255)
+   * @param inputValues ... N×Nで配置された画素値(0~255)のTable
+   * @return 変換したあとのN×Nで配置された画素値(0~255)のTable
    */
   /// 具体例:
   /// inputValues[x][y] = val はx+1行目のy+1列目にvalの画素値をもつことを表す。
@@ -29,16 +32,21 @@ public abstract class Converter {
   /// inputValues[2][1] = 7
   /// inputValues[2][2] = 8
   public Table<Integer, Integer, Integer> getResult(Table<Integer, Integer, Integer> inputValues) {
+    log.debug(inputValues.toString());
     Table<Integer, Integer, Integer> result = HashBasedTable.create();
-    inputValues.rowKeySet().stream().forEach(x -> {
+    inputValues.rowKeySet().stream().sorted().forEach(x -> {
       Map<Integer, Integer> yToValue = inputValues.rowMap().get(x);
-      yToValue.entrySet().forEach(entry -> {
-        Integer y = entry.getKey();
-        Integer value = entry.getValue();
+      yToValue.keySet().stream().sorted().forEach(y -> {
+        Integer value = yToValue.get(y);
         result.put(x, y, convert(value));
       });
     });
+    log.debug(result.toString());
     return result;
+  }
+
+  public Integer getResult(Integer inputValue) {
+    return convert(inputValue);
   }
 
   abstract protected Integer convert(Integer value);

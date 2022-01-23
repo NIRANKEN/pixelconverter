@@ -1,20 +1,33 @@
 package com.digital.pixelconverter.converter.builder;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class PosterizationConverter extends Converter {
+
+  // MEMO: 画素上限値255 + 1
+  private static final int OVER_PIXEL_VALUE = 256;
+
+  // MEMO: テキストp266-267の階段の数が5つの場合
+  private static final int SEP_PIXEL_VALUE = 5;
 
   @Override
   protected Integer convert(Integer value) {
-    // ※階段の数が4つの場合
-    if (0 <= value && value < 64) {
-      return Integer.valueOf(0);
-    } else if (64 <= value && value < 128) {
-      return Integer.valueOf(64);
-    } else if (128 <= value && value < 192) {
-      return Integer.valueOf(128);
-    } else if (192 <= value && value < 256) {
-      return Integer.valueOf(255);
+    if (value < 0 || 255 < value) {
+      log.error("想定されていない画素値(value)の入力です。{value: {}}", value);
+      throw new RuntimeException(String.format("想定されていない画素値(value)の入力です。{value: %s}", value));
     }
+    int outputUnitLength = OVER_PIXEL_VALUE / (SEP_PIXEL_VALUE - 1);
+    int outputUnitLengthNum = calcOutputUnitLengthNum(value);
+    log.trace("出力長: {}, 出力長の数: {}", outputUnitLength, outputUnitLengthNum);
+    log.trace("変換結果: {}", outputUnitLength * outputUnitLengthNum);
+    return outputUnitLength * outputUnitLengthNum == 256 ? Integer.valueOf(255)
+        : outputUnitLength * outputUnitLengthNum;
+  }
 
-    throw new RuntimeException(String.format("想定されていない画素値(value)の入力です。{value: %s}", value));
+  private int calcOutputUnitLengthNum(int value) {
+    int stepWidth = OVER_PIXEL_VALUE / (SEP_PIXEL_VALUE);
+    int outputLengthUnitNum = (value / stepWidth);
+    return outputLengthUnitNum == SEP_PIXEL_VALUE ? SEP_PIXEL_VALUE - 1 : outputLengthUnitNum;
   }
 }

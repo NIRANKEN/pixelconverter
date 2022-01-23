@@ -1,6 +1,6 @@
 com/digital/pixelconverter/converter/factory/ConverterFactory.class
-com/digital/pixelconverter/converter/model/ConverterType.class
 com/digital/pixelconverter/App.class
+com/digital/pixelconverter/converter/factory/ConverterFactory$1.class
+com/digital/pixelconverter/converter/model/ConverterType.class
 com/digital/pixelconverter/converter/builder/PosterizationConverter.class
 com/digital/pixelconverter/converter/builder/Converter.class
-com/digital/pixelconverter/converter/factory/ConverterFactory$1.class

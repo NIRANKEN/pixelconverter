@@ -9,8 +9,9 @@ public class ConverterFactory {
     switch (type) {
     case POSTERIZATION:
       return new PosterizationConverter();
+    // 他の変換が必要な場合はここでEnumと作ったConverterを紐付ける
     default:
-      // MEMO: strictにするならエラー出す
+      // MEMO: strictに判定するならエラー出す
       return new PosterizationConverter();
     }
   }
